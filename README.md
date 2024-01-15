@@ -39,6 +39,7 @@ sudo systemctl start elasticsearch.service #--запускаем сервис
 ```
 2. Зашёл в настройки `elasticsearch` по пути `/etc/elasticsearch/elasticsearch.yml`, раскомментировал строку `claster.name` и изменил в ней данные, написав своё имя.
 3. Перезапустил сервис `sudo systemctl restart elasticsearch`
+4. Проверяю изменённое имя кластера:
 ![cluster_health](https://github.com/Lexacbr/ELK/blob/main/scrsh/health-cmd.png)
 
 ---
@@ -75,7 +76,16 @@ sudo nano /etc/kibana/kibana.yml
 ```bash
 server.host:"0.0.0.0"
 ```
-6. 
+6. Перезагружаю сервис для применения настроек:
+```bash
+sudo systemctl restart kibana
+```
+7. На странице http://127.0.0.1:5601/app/dev_tools#/console, в консоли выполняю запрос GET /_cluster/health?pretty
+```bash
+GET /_cluster/health?pretty
+```
+![cluster_health](https://github.com/Lexacbr/ELK/blob/main/scrsh/clus-health.png)
+
 ---
 ### Задание 3. Logstash
 
