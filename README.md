@@ -104,10 +104,41 @@ sudo apt install logstash
 ```bash
 sudo apt install nginx
 ```
-2. 
+2. Настраиваю конфиг-файл Нджинкс:
+```bash
+sudo nano /etc/nginx/nginx.conf
+```
+3. Добавляю запись в конфиг-файле:
+```bash
+access_log syslog:server=127.0.0.1:6000;
+```
+![nginx_config](https://github.com/Lexacbr/ELK/blob/main/scrsh/ng-conf.png)
 
+4. Создаю конфигурационный файл `logstash.conf`
+```bash
+input {
+  syslog {
+    port => 6000
+    tags => "nginx"
+  }
+}
 
-![logstash](https://github.com/Lexacbr/ELK/blob/main/scrsh/.png)
+output {
+  elasticsearch {
+    hosts => ["http://127.0.0.1:9200"]
+    index => "nginx-index"
+  }
+}
+```
+
+![logstash_config](https://github.com/Lexacbr/ELK/blob/main/scrsh/logst-conf.png)
+
+5. Перезапускаю сервисы: elastic, kibana, logstash, nginx (мне было необходимо дать немного времени на прогрузгу сервисов)
+6. Создаю записи в логах путём обращения к `nginx` через терминал `curl localhost/nginx`
+7. Захожу через браузер в Кибану в раздел `Stack Management`>`Index patterns`> нажимаю в верхнем правом углу синию кнопку `+ Create index pattern`> в правой секции копирую название появившегося индекса `nginx-index`> вставляю в поле `Name`> во вкладке `Timestamp` выбираю `@Timestamp`> и нажимаю внизу кнопку `Create index pattern`. Далее заходим через основное меню в Кибане в пункт `Discover` и в левой части окна, под кнопкой `+ Add filter` выбираем наш индекс `nginx-index`
+
+![nginx_index](https://github.com/Lexacbr/ELK/blob/main/scrsh/ng-index.png)
+![nginx_index](https://github.com/Lexacbr/ELK/blob/main/scrsh/ng-ind-log.png)
 
 ---
 ### Задание 4. Filebeat. 
@@ -118,23 +149,6 @@ sudo apt install nginx
 
 ---
 ### Ответ 4
----
-
-
-
----
-## Дополнительные задания (со звёздочкой*)
-Эти задания дополнительные, то есть не обязательные к выполнению, и никак не повлияют на получение вами зачёта по этому домашнему заданию. Вы можете их выполнить, если хотите глубже шире разобраться в материале.
-
-### Задание 5*. Доставка данных 
-
-Настройте поставку лога в Elasticsearch через Logstash и Filebeat любого другого сервиса , но не Nginx. 
-Для этого лог должен писаться на файловую систему, Logstash должен корректно его распарсить и разложить на поля. 
-
-*Приведите скриншот интерфейса Kibana, на котором будет виден этот лог и напишите лог какого приложения отправляется.*
-
----
-### Ответ 5
 ---
 
 
