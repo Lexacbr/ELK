@@ -12,7 +12,7 @@
 - [привязываем индексы из elastic в kibana](https://www.elastic.co/guide/en/kibana/7.17/index-patterns.html);
 - [как просматривать логи в kibana](https://www.elastic.co/guide/en/kibana/current/discover.html);
 - [решение ошибки increase vm.max_map_count elasticsearch](https://stackoverflow.com/questions/42889241/how-to-increase-vm-max-map-count).
-
+- [настройка filebeat VK.com](https://cloud.vk.com/docs/additionals/cases/cases-logs/case-logging#ustanovka_filebeat)
 **Примечание**: если у вас недоступны официальные образы, можете найти альтернативные варианты в DockerHub, например, [такой](https://hub.docker.com/layers/bitnami/elasticsearch/7.17.13/images/sha256-8084adf6fa1cf24368337d7f62292081db721f4f05dcb01561a7c7e66806cc41?context=explore).
 
 ### Задание 1. Elasticsearch 
@@ -39,20 +39,42 @@ sudo systemctl start elasticsearch.service #--запускаем сервис
 ```
 2. Зашёл в настройки `elasticsearch` по пути `/etc/elasticsearch/elasticsearch.yml`, раскомментировал строку `claster.name` и изменил в ней данные, написав своё имя.
 3. Перезапустил сервис `sudo systemctl restart elasticsearch`
-
+![скрин]()
 ---
 ### Задание 2. Kibana
 
 Установите и запустите Kibana.
 
 *Приведите скриншот интерфейса Kibana на странице http://<ip вашего сервера>:5601/app/dev_tools#/console, где будет выполнен запрос GET /_cluster/health?pretty*.
-
+```bash```
 ---
 ### Ответ 2
 ---
-
-
-
+Что я делал:
+1. Установка Кибаны:
+```bash 
+sudo apt install kibana
+```
+2. Обновляем конфигурационный файл systemd:
+```bash
+sudo systemctl daemon-reload
+```
+3. Включаю в автозагрузку сервис:
+```bash
+sudo systemctl enable kibana.service
+```
+4. Запускаю сервис:
+```bash
+sudo systemctl start kibana.service
+```
+5. Раскомментировал в конфиг-файле Кибаны `server.host:"0.0.0.0"`открыв доступ в Интернет
+```bash
+sudo nano /etc/kibana/kibana.yml
+```
+```bash
+server.host:"0.0.0.0"
+```
+6. 
 ---
 ### Задание 3. Logstash
 
