@@ -48,7 +48,7 @@ sudo systemctl start elasticsearch.service #--запускаем сервис
 Установите и запустите Kibana.
 
 *Приведите скриншот интерфейса Kibana на странице http://<ip вашего сервера>:5601/app/dev_tools#/console, где будет выполнен запрос GET /_cluster/health?pretty*.
-```bash```
+
 ---
 ### Ответ 2
 ---
@@ -92,13 +92,22 @@ GET /_cluster/health?pretty
 Установите и запустите Logstash и Nginx. С помощью Logstash отправьте access-лог Nginx в Elasticsearch. 
 
 *Приведите скриншот интерфейса Kibana, на котором видны логи Nginx.*
+```bash```
 
 ---
 ### Ответ 3
 ---
+1. Устанавливаю Логстэш и Нджинкс:
+```bash
+sudo apt install logstash
+```
+```bash
+sudo apt install nginx
+```
+2. 
 
 
-
+![logstash](https://github.com/Lexacbr/ELK/blob/main/scrsh/.png)
 
 ---
 ### Задание 4. Filebeat. 
