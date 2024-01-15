@@ -39,7 +39,8 @@ sudo systemctl start elasticsearch.service #--запускаем сервис
 ```
 2. Зашёл в настройки `elasticsearch` по пути `/etc/elasticsearch/elasticsearch.yml`, раскомментировал строку `claster.name` и изменил в ней данные, написав своё имя.
 3. Перезапустил сервис `sudo systemctl restart elasticsearch`
-![скрин]()
+![cluster_health](https://github.com/Lexacbr/ELK/blob/main/scrsh/clus-health.png)
+
 ---
 ### Задание 2. Kibana
 
