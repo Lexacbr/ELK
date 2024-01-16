@@ -92,7 +92,7 @@ GET /_cluster/health?pretty
 Установите и запустите Logstash и Nginx. С помощью Logstash отправьте access-лог Nginx в Elasticsearch. 
 
 *Приведите скриншот интерфейса Kibana, на котором видны логи Nginx.*
-```bash```
+
 
 ---
 ### Ответ 3
@@ -138,7 +138,7 @@ output {
 7. Захожу через браузер в Кибану в раздел `Stack Management`>`Index patterns`> нажимаю в верхнем правом углу синию кнопку `+ Create index pattern`> в правой секции копирую название появившегося индекса `nginx-index`> вставляю в поле `Name`> во вкладке `Timestamp` выбираю `@Timestamp`> и нажимаю внизу кнопку `Create index pattern`. Далее заходим через основное меню в Кибане в пункт `Discover` и в левой части окна, под кнопкой `+ Add filter` выбираем наш индекс `nginx-index`
 
 ![nginx_index](https://github.com/Lexacbr/ELK/blob/main/scrsh/ng-index.png)
-![nginx_index](https://github.com/Lexacbr/ELK/blob/main/scrsh/ng-ind-log.png)
+![nginx_index_log](https://github.com/Lexacbr/ELK/blob/main/scrsh/ng-ind-log.png)
 
 ---
 ### Задание 4. Filebeat. 
@@ -147,10 +147,62 @@ output {
 
 *Приведите скриншот интерфейса Kibana, на котором видны логи Nginx, которые были отправлены через Filebeat.*
 
+```bash
+
+```
+
 ---
 ### Ответ 4
 ---
+1. Устанавливаю Файлбит из репозитория:
+```bash
+sudo apt install filebeat
+```
+2. Обновляю конфиг-файл systemd:
+```bash
+sudo systemctl daemon-reload
+```
+3. Включаю сервис в автозагрузку:
+```bash
+sudo systemctl enable filebeat.service
+```
+4. Редактирую конфиг-файл filebeat опираясь на данную [статью](https://cloud.vk.com/docs/additionals/cases/cases-logs/case-logging#ustanovka_filebeat)
 
+5. Меняю конфиг filebeat в файле:
+```bash
+sudo nano /etc/filebeat/filebeat.yml
+```
+```bash
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/nginx/access.log
+```
+6. В пункте `Outputs` в подразделе `Elasticsearch Output` раскомментирую данную строку:
+```bash
+output.elasticsearch:
+  hosts: ["localhost:9200"]
+```
+7. Создаю файл /etc/logstash/conf.d/input-beats.conf, содержащий номер порта, на который Beats (в частности, Filebeat) присылает свои логи:
+```bash
+input {
+  beats {
+    port => 5044
+  }
+}
+```
+8. Создаю файл /etc/logstash/conf.d/output-elasticsearch.conf и укажите, что логи нужно отправлять в Elasticsearch по адресу localhost 
+```bash
+output {
+elasticsearch {
+hosts => [ "localhost:9200" ]
+        manage_template => false
+        index => "filebeat-%{+YYYY.MM.dd}"
+    }
+}
+```
+Данные по настройке брал из этой [статьи](https://cloud.vk.com/docs/additionals/cases/cases-logs/
 
-
+![filebeat_index_log](https://github.com/Lexacbr/ELK/blob/main/scrsh/filebeat-log.png)
 ---
