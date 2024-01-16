@@ -184,7 +184,7 @@ filebeat.inputs:
 output.elasticsearch:
   hosts: ["localhost:9200"]
 ```
-7. Создаю файл /etc/logstash/conf.d/input-beats.conf, содержащий номер порта, на который Beats (в частности, Filebeat) присылает свои логи:
+7. Создаю файл `sudo nano /etc/logstash/conf.d/input-beats.conf`, содержащий номер порта, на который Beats (в частности, Filebeat) присылает свои логи:
 ```bash
 input {
   beats {
@@ -192,7 +192,7 @@ input {
   }
 }
 ```
-8. Создаю файл /etc/logstash/conf.d/output-elasticsearch.conf и укажите, что логи нужно отправлять в Elasticsearch по адресу localhost 
+8. Создаю файл `sudo nano /etc/logstash/conf.d/output-elasticsearch.conf` и указываю, что логи нужно отправлять в Elasticsearch по адресу localhost 
 ```bash
 output {
 elasticsearch {
@@ -202,7 +202,7 @@ hosts => [ "localhost:9200" ]
     }
 }
 ```
-Данные по настройке брал из этой [статьи](https://cloud.vk.com/docs/additionals/cases/cases-logs/
+Данные по настройке брал из этой [статьи](https://cloud.vk.com/docs/additionals/cases/cases-logs/)
 
 ![filebeat_index_log](https://github.com/Lexacbr/ELK/blob/main/scrsh/filebeat-log.png)
 ---
